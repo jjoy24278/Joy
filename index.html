@@ -3,234 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Tips Admin Dashboard</title>
+    <title>Premium Football Tips & Predictions</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepblue: {
+                            50: '#f0f4f8',
+                            100: '#dbeafe',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                            custom: '#0a192f' /* Pure Deep Blue */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
 
-    <!-- LOGIN SCREEN -->
-    <div id="login-section" class="flex items-center justify-center min-h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-md w-96">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Admin Login</h2>
-            <div id="login-error" class="hidden bg-red-100 text-red-700 p-2 rounded mb-4 text-sm text-center">Invalid Password!</div>
-            <div class="mb-4">
-                <label class="block text-sm font-semibold text-gray-600 mb-2">Password</label>
-                <input type="password" id="admin-password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Admin Password">
+    <!-- 1. PROFESSIONAL DEEP BLUE HOME PAGE -->
+    <div id="home-page" class="block">
+        <!-- Hero Section -->
+        <div class="bg-deepblue-custom text-white min-h-screen flex flex-col">
+            <!-- Navigation -->
+            <nav class="max-w-6xl mx-auto w-full p-6 flex justify-between items-center">
+                <div class="text-2xl font-bold tracking-wider text-cyan-400">⚽ PROTIPS</div>
+                <div class="space-x-4">
+                    <button onclick="showSection('login-register-page')" class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-lg font-semibold transition">Login / Register</button>
+                    <button onclick="showSection('admin-login-page')" class="text-gray-400 hover:text-white transition text-sm">Admin</button>
+                </div>
+            </nav>
+
+            <!-- Hero Main -->
+            <div class="flex-1 max-w-4xl mx-auto text-center flex flex-col justify-center px-4 -mt-16">
+                <span class="text-cyan-400 font-mono tracking-widest uppercase text-sm mb-3">Welcome to the Ultimate Football Prediction Platform</span>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">Get Winning Free & <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">VIP Football Tips</span> Daily</h1>
+                <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">Access professional, data-driven match analysis. Join thousands of successful punters today.</p>
+                
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="scrollToTips()" class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-500/20 hover:opacity-95 transition">View Free Tips</button>
+                    <button onclick="showSection('login-register-page')" class="bg-gray-800 border border-gray-700 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-gray-700 transition">Get VIP Access</button>
+                </div>
             </div>
-            <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Login</button>
+        </div>
+
+        <!-- Tips Display Section -->
+        <div id="tips-display-section" class="max-w-6xl mx-auto px-4 py-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Today's Matches & Predictions</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Free Tips Card -->
+                <div class="bg-white rounded-2xl shadow-md p-6 border-t-4 border-green-500">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex justify-between">
+                        <span>🔓 Free Tips</span>
+                        <span class="text-xs bg-green-100 text-green-800 px-2.5 py-1 rounded-full">100% Free</span>
+                    </h3>
+                    <div id="home-free-tips-list" class="space-y-4 divide-y divide-gray-100">
+                        <!-- Dynamic Free Tips -->
+                    </div>
+                </div>
+
+                <!-- VIP Tips Card -->
+                <div class="bg-white rounded-2xl shadow-md p-6 border-t-4 border-purple-600 bg-gradient-to-b from-white to-purple-50/30">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex justify-between">
+                        <span>👑 VIP Premium Tips</span>
+                        <span class="text-xs bg-purple-100 text-purple-800 px-2.5 py-1 rounded-full">Paid Only</span>
+                    </h3>
+                    <div id="home-vip-tips-list" class="space-y-4">
+                        <!-- Locked or Unlocked VIP tips -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD (HIDDEN BY DEFAULT) -->
-    <div id="admin-dashboard" class="hidden">
-        <!-- Navbar -->
-        <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md">
-            <h1 class="text-xl font-bold">⚽ Football Tips Admin Panel</h1>
-            <button onclick="handleLogout()" class="bg-red-500 px-4 py-1.5 rounded-lg hover:bg-red-600 transition text-sm font-semibold">Logout</button>
+    <!-- 2. USER LOGIN / REGISTER PAGE -->
+    <div id="login-register-page" class="hidden min-h-screen flex items-center justify-center p-4 bg-deepblue-custom">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+            <div class="flex justify-between mb-6">
+                <button onclick="toggleAuthMode('login')" id="auth-tab-login" class="text-xl font-bold text-blue-600 border-b-2 border-blue-600 pb-2 flex-1 text-center">Login</button>
+                <button onclick="toggleAuthMode('register')" id="auth-tab-register" class="text-xl font-bold text-gray-400 pb-2 flex-1 text-center">Register</button>
+            </div>
+            
+            <div id="auth-error" class="hidden bg-red-100 text-red-700 p-2 rounded-lg mb-4 text-sm text-center"></div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Email Address</label>
+                    <input type="email" id="auth-email" class="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Password</label>
+                    <input type="password" id="auth-password" class="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button onclick="handleUserAuth()" id="auth-btn" class="w-full bg-blue-600 text-white py-2.5 rounded-xl font-bold hover:bg-blue-700 transition mt-2">Sign In</button>
+                <button onclick="showSection('home-page')" class="w-full text-center text-sm text-gray-500 hover:underline">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. USER DASHBOARD & 6. PAYMENT INTEGRATION -->
+    <div id="user-dashboard-page" class="hidden">
+        <nav class="bg-deepblue-custom text-white p-4 flex justify-between items-center shadow-md">
+            <h1 class="text-lg font-bold text-cyan-400">👤 User Dashboard</h1>
+            <div class="flex items-center gap-4">
+                <span id="user-status-badge" class="text-xs px-2.5 py-1 rounded-full font-bold"></span>
+                <button onclick="handleUserLogout()" class="bg-red-500 px-3 py-1 rounded-lg text-sm font-semibold hover:bg-red-600 transition">Logout</button>
+            </div>
+        </nav>
+        
+        <div class="max-w-4xl mx-auto p-4 mt-6">
+            <!-- Payment Area / Premium Upgrade -->
+            <div id="premium-upgrade-card" class="hidden bg-gradient-to-r from-purple-900 to-indigo-800 text-white p-6 rounded-2xl shadow-lg mb-6">
+                <h3 class="text-xl font-bold mb-2">🚀 Upgrade to VIP Premium</h3>
+                <p class="text-purple-200 text-sm mb-4">Get instant 100% access to highly accurate VIP tips, accurate scores, and daily premium coupons.</p>
+                
+                <div class="bg-white/10 p-4 rounded-xl max-w-sm mb-4 border border-white/10">
+                    <span class="block text-xs uppercase tracking-wider text-purple-300">VIP Access Package</span>
+                    <span class="text-3xl font-extrabold">$19.99 <span class="text-sm font-normal">/ month</span></span>
+                </div>
+
+                <!-- Payment Options Form (Simulated Gateway Interface) -->
+                <div class="bg-white text-gray-800 p-4 rounded-xl max-w-md">
+                    <h4 class="font-bold text-sm mb-3">Secure Payment Gateway Integration</h4>
+                    <div class="space-y-3 mb-4">
+                        <input type="text" placeholder="Cardholder Name" class="w-full p-2 border text-sm rounded">
+                        <input type="text" placeholder="Card Number (4111 2222 3333 4444)" class="w-full p-2 border text-sm rounded">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" placeholder="MM/YY" class="w-full p-2 border text-sm rounded">
+                            <input type="text" placeholder="CVC" class="w-full p-2 border text-sm rounded">
+                        </div>
+                    </div>
+                    <button onclick="simulatePaymentProcess()" class="w-full bg-purple-600 text-white font-bold py-2 rounded shadow hover:bg-purple-700 transition text-sm">Pay & Activate Instantly</button>
+                </div>
+            </div>
+
+            <!-- Main Authorized Tips View -->
+            <div class="bg-white p-6 rounded-2xl shadow">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Your Accessible Predictions</h3>
+                <div id="dashboard-tips-list" class="space-y-4">
+                    <!-- Loaded dynamically according to status -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN PAGE -->
+    <div id="admin-login-page" class="hidden min-h-screen flex items-center justify-center bg-gray-900">
+        <div class="bg-white p-8 rounded-xl shadow-md w-96">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Admin Secure Gate</h2>
+            <div id="admin-login-error" class="hidden bg-red-100 text-red-700 p-2 rounded mb-4 text-sm text-center">Invalid Password!</div>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-600 mb-1">Master Password</label>
+                <input type="password" id="admin-password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button onclick="handleAdminLogin()" class="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 transition">Authorize</button>
+            <button onclick="showSection('home-page')" class="w-full text-center text-sm text-gray-500 hover:underline mt-4">Cancel</button>
+        </div>
+    </div>
+
+    <!-- 3. FUNCTIONAL ADMIN DASHBOARD -->
+    <div id="admin-dashboard-page" class="hidden">
+        <nav class="bg-gray-800 p-4 text-white flex justify-between items-center shadow-md">
+            <h1 class="text-xl font-bold text-yellow-400">⚙️ Master Control Admin Panel</h1>
+            <button onclick="handleAdminLogout()" class="bg-red-500 px-4 py-1.5 rounded-lg hover:bg-red-600 transition text-sm font-semibold">Exit Panel</button>
         </nav>
 
-        <div class="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <!-- LEFT COLUMN: ADD / EDIT FORM -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 id="form-title" class="text-lg font-bold mb-4 text-gray-700">Add New Match & Tip</h3>
+        <div class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+            <!-- Form Area -->
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 id="form-title" class="text-lg font-bold mb-4 text-gray-700">Publish/Manage Matches</h3>
                 <input type="hidden" id="match-id">
                 
                 <div class="mb-3">
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Teams (e.g. Real Madrid vs Barcelona)</label>
-                    <input type="text" id="match-teams" class="w-full p-2 border rounded text-sm">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Teams</label>
+                    <input type="text" id="match-teams" placeholder="Chelsea vs Arsenal" class="w-full p-2 border rounded text-sm">
                 </div>
                 
                 <div class="mb-3">
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Match Date & Time</label>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Kickoff Time</label>
                     <input type="datetime-local" id="match-time" class="w-full p-2 border rounded text-sm">
                 </div>
 
                 <div class="mb-3">
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tip Content (e.g. Over 2.5 Goals)</label>
-                    <input type="text" id="tip-content" class="w-full p-2 border rounded text-sm">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tip / Analysis</label>
+                    <input type="text" id="tip-content" placeholder="Away Win or Draw" class="w-full p-2 border rounded text-sm">
                 </div>
 
                 <div class="mb-3">
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tip Category</label>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tier Level (4. Free & VIP Tips)</label>
                     <select id="tip-category" class="w-full p-2 border rounded text-sm bg-white">
-                        <option value="Free">Free Tip</option>
-                        <option value="VIP">VIP Tip</option>
+                        <option value="Free">Free Tier</option>
+                        <option value="VIP">VIP Premium Tier</option>
                     </select>
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Status</label>
                     <select id="tip-status" class="w-full p-2 border rounded text-sm bg-white">
-                        <option value="Published">Publish Immediately</option>
-                        <option value="Draft">Save as Draft</option>
+                        <option value="Published">Publish Live</option>
+                        <option value="Draft">Save Internal Draft</option>
                     </select>
                 </div>
 
                 <div class="flex gap-2">
-                    <button onclick="saveMatch()" id="btn-save" class="flex-1 bg-green-600 text-white py-2 rounded font-semibold hover:bg-green-700 text-sm">Save Match</button>
-                    <button onclick="resetForm()" id="btn-cancel" class="hidden flex-1 bg-gray-400 text-white py-2 rounded font-semibold hover:bg-gray-500 text-sm">Cancel</button>
+                    <button onclick="saveMatch()" id="btn-save" class="flex-1 bg-green-600 text-white py-2 rounded font-semibold hover:bg-green-700 text-sm">Save & Push</button>
+                    <button onclick="resetAdminForm()" id="btn-cancel" class="hidden flex-1 bg-gray-400 text-white py-2 rounded font-semibold hover:bg-gray-500 text-sm">Cancel</button>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: MATCHES & TIPS LIST -->
-            <div class="md:col-span-2 bg-white p-6 rounded-lg shadow">
-                <h3 class="text-lg font-bold mb-4 text-gray-700">All Matches & Predictions</h3>
+            <!-- List Area -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow">
+                <h3 class="text-lg font-bold mb-4 text-gray-700">Live Database Operations</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-gray-100 border-b text-xs font-bold uppercase text-gray-600">
-                                <th class="p-3">Match</th>
-                                <th class="p-3">Time</th>
+                            <tr class="bg-gray-50 border-b text-xs font-bold uppercase text-gray-600">
+                                <th class="p-3">Match Event</th>
+                                <th class="p-3">Schedule</th>
                                 <th class="p-3">Tip</th>
-                                <th class="p-3">Type</th>
+                                <th class="p-3">Tier</th>
                                 <th class="p-3">Status</th>
                                 <th class="p-3 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="match-list-table" class="text-sm divide-y">
-                            <!-- Matches will load here dynamically -->
-                        </tbody>
+                        <tbody id="admin-match-table" class="text-sm divide-y"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- MAIN APP SCRIPT ENGINE -->
     <script>
-        // SECURE LOGIN SYSTEM (Default Password: admin123)
-        const SECURE_HASH = "admin123"; 
-
-        function handleLogin() {
-            const passInput = document.getElementById('admin-password').value;
-            if (passInput === SECURE_HASH) {
-                sessionStorage.setItem('isAdminLoggedIn', 'true');
-                checkAuth();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem('isAdminLoggedIn');
-            checkAuth();
-        }
-
-        function checkAuth() {
-            const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
-            if (isLoggedIn === 'true') {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                renderMatches();
-            } else {
-                document.getElementById('login-section').classList.remove('hidden');
-                document.getElementById('admin-dashboard').classList.add('hidden');
-            }
-        }
-
-        // CRUD SYSTEM (Create, Read, Update, Delete)
+        let currentAuthMode = 'login';
         let matches = JSON.parse(localStorage.getItem('football_matches')) || [];
+        let users = JSON.parse(localStorage.getItem('platform_users')) || [];
+        let currentUser = JSON.parse(sessionStorage.getItem('current_user')) || null;
 
-        function saveMatch() {
-            const id = document.getElementById('match-id').value;
-            const teams = document.getElementById('match-teams').value;
-            const time = document.getElementById('match-time').value;
-            const tip = document.getElementById('tip-content').value;
-            const category = document.getElementById('tip-category').value;
-            const status = document.getElementById('tip-status').value;
+        // View Router Switching Engine
+        function showSection(sectionId) {
+            ['home-page', 'login-register-page', 'user-dashboard-page', 'admin-login-page', 'admin-dashboard-page'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            window.scrollTo(0,0);
+            
+            // Sync triggers
+            if(sectionId === 'home-page') renderHomePageTips();
+            if(sectionId === 'user-dashboard-page') renderUserDashboard();
+        }
 
-            if (!teams || !time || !tip) {
-                alert("Please fill all fields!");
+        function scrollToTips() {
+            document.getElementById('tips-display-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- AUTH & USER MANAGEMENT SYSTEM ---
+        function toggleAuthMode(mode) {
+            currentAuthMode = mode;
+            document.getElementById('auth-error').classList.add('hidden');
+            if(mode === 'login') {
+                document.getElementById('auth-tab-login').className = "text-xl font-bold text-blue-600 border-b-2 border-blue-600 pb-2 flex-1 text-center";
+                document.getElementById('auth-tab-register').className = "text-xl font-bold text-gray-400 pb-2 flex-1 text-center";
+                document.getElementById('auth-btn').innerText = "Sign In";
+            } else {
+                document.getElementById('auth-tab-register').className = "text-xl font-bold text-blue-600 border-b-2 border-blue-600 pb-2 flex-1 text-center";
+                document.getElementById('auth-tab-login').className = "text-xl font-bold text-gray-400 pb-2 flex-1 text-center";
+                document.getElementById('auth-btn').innerText = "Create Account";
+            }
+        }
+
+        function handleUserAuth() {
+            const email = document.getElementById('auth-email').value.trim();
+            const pass = document.getElementById('auth-password').value;
+            const errorDiv = document.getElementById('auth-error');
+
+            if(!email || !pass) {
+                errorDiv.innerText = "Please fill in all security fields.";
+                errorDiv.classList.remove('hidden');
                 return;
             }
 
-            if (id) {
-                // Edit Existing Match
+            if(currentAuthMode === 'register') {
+                if(users.some(u => u.email === email)) {
+                    errorDiv.innerText = "Account already exists with this email.";
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+                const newUser = { email, pass, tier: 'Free' };
+                users.push(newUser);
+                localStorage.setItem('platform_users', JSON.stringify(users));
+                currentUser = newUser;
+                sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+                showSection('user-dashboard-page');
+            } else {
+                const foundUser = users.find(u => u.email === email && u.pass === pass);
+                if(!foundUser) {
+                    errorDiv.innerText = "Invalid authentication details.";
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+                currentUser = foundUser;
+                sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+                showSection('user-dashboard-page');
+            }
+        }
+
+        function handleUserLogout() {
+            currentUser = null;
+            sessionStorage.removeItem('current_user');
+            showSection('home-page');
+        }
+
+        // --- 6. INTEGRATED PAYMENT SIMULATOR ---
+        function simulatePaymentProcess() {
+            if(!currentUser) return;
+            alert("Processing secure validation with banking gateway...");
+            
+            // Upgrade data layer
+            currentUser.tier = 'VIP';
+            sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+            
+            users = users.map(u => u.email === currentUser.email ? { ...u, tier: 'VIP' } : u);
+            localStorage.setItem('platform_users', JSON.stringify(users));
+            
+            alert("Payment Confirmed! Your account tier is upgraded to VIP.");
+            renderUserDashboard();
+        }
+
+        // --- DATA DISPLAY ENGINES ---
+        function renderHomePageTips() {
+            const freeContainer = document.getElementById('home-free-tips-list');
+            const vipContainer = document.getElementById('home-vip-tips-list');
+            freeContainer.innerHTML = "";
+            vipContainer.innerHTML = "";
+
+            const publicMatches = matches.filter(m => m.status === 'Published');
+            const freeMatches = publicMatches.filter(m => m.category === 'Free');
+            const vipMatches = publicMatches.filter(m => m.category === 'VIP');
+
+            if(freeMatches.length === 0) freeContainer.innerHTML = "<p class='text-gray-400 text-sm py-2'>Analyzing upcoming fields...</p>";
+            else {
+                freeMatches.forEach(m => {
+                    freeContainer.innerHTML += `
+                        <div class="py-3">
+                            <div class="flex justify-between text-xs text-gray-500 mb-1"><span>⚽ Football Match</span><span>${new Date(m.time).toLocaleString([], {hour:'2-digit', minute:'2-digit', day:'numeric', month:'short'})}</span></div>
+                            <div class="font-bold text-gray-800">${m.teams}</div>
+                            <div class="text-sm font-semibold text-blue-600 mt-1">Prediction: ${m.tip}</div>
+                        </div>`;
+                });
+            }
+
+            if(vipMatches.length === 0) vipContainer.innerHTML = "<p class='text-gray-400 text-sm py-2'>Analyzing premium lines...</p>";
+            else {
+                vipMatches.forEach(m => {
+                    vipContainer.innerHTML += `
+                        <div class="p-4 bg-purple-50 rounded-xl border border-purple-100 flex justify-between items-center">
+                            <div>
+                                <div class="text-xs font-bold text-purple-700 uppercase tracking-wide mb-0.5">${m.teams.split('vs')[0]} vs ???</div>
+                                <div class="text-xs text-gray-400">${new Date(m.time).toLocaleDateString()}</div>
+                            </div>
+                            <button onclick="showSection('login-register-page')" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-3 py-2 rounded-lg">Unlock VIP Tip</button>
+                        </div>`;
+                });
+            }
+        }
+
+        function renderUserDashboard() {
+            if(!currentUser) { showSection('login-register-page'); return; }
+            
+            const badge = document.getElementById('user-status-badge');
+            const upgradeCard = document.getElementById('premium-upgrade-card');
+            const container = document.getElementById('dashboard-tips-list');
+            
+            badge.innerText = `${currentUser.tier} Member`;
+            badge.className = currentUser.tier === 'VIP' ? "text-xs bg-purple-600 text-white px-2.5 py-1 rounded-full font-bold" : "text-xs bg-gray-600 text-white px-2.5 py-1 rounded-full font-bold";
+            
+            if(currentUser.tier === 'VIP') upgradeCard.classList.add('hidden');
+            else upgradeCard.classList.remove('hidden');
+
+            container.innerHTML = "";
+            const activeTips = matches.filter(m => m.status === 'Published');
+
+            if(activeTips.length === 0) {
+                container.innerHTML = "<p class='text-gray-400 text-center py-6'>No tips pushed into database stream yet.</p>";
+                return;
+            }
+
+            activeTips.forEach(m => {
+                const canView = (m.category === 'Free' || currentUser.tier === 'VIP');
+                container.innerHTML += `
+                    <div class="p-4 border rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                        <div>
+                            <span class="inline-block text-[10px] uppercase font-extrabold tracking-wider px-2 py-0.5 rounded ${m.category === 'VIP'?'bg-purple-100 text-purple-800':'bg-green-100 text-green-800'}">${m.category} Tip</span>
+                            <h4 class="font-bold text-gray-800 mt-1">${canView ? m.teams : m.teams.split('vs')[0] + ' vs ???'}</h4>
+                            <p class="text-xs text-gray-400">${new Date(m.time).toLocaleString()}</p>
+                        </div>
+                        <div class="w-full md:w-auto text-left md:text-right">
+                            ${canView ? `<span class="text-sm font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-lg inline-block">Prediction: ${m.tip}</span>` : `<button onclick="window.scrollTo(0,0)" class="w-full md:w-auto bg-purple-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow">Unlock via Subscription Upgrade</button>`}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // --- MASTER ADMIN LAYER LOGIC ---
+        const MASTER_GATE = "admin123";
+
+        function handleAdminLogin() {
+            if(document.getElementById('admin-password').value === MASTER_GATE) {
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                document.getElementById('admin-login-error').classList.add('hidden');
+                showSection('admin-dashboard-page');
+                renderAdminTable();
+            } else {
+                document.getElementById('admin-login-error').classList.remove('hidden');
+            }
+        }
+
+        function handleAdminLogout() {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            showSection('home-page');
+        }
+
+        function saveMatch() {
+            const id = document.getElementById('match-id').value;
+            const teams = document.getElementById('match-teams').value.trim();
+            const time = document.getElementById('match-time').value;
+            const tip = document.getElementById('tip-content').value.trim();
+            const category = document.getElementById('tip-category').value;
+            const status = document.getElementById('tip-status').value;
+
+            if(!teams || !time || !tip) { alert("Execution halted. Complete database row matrix."); return; }
+
+            if(id) {
                 matches = matches.map(m => m.id == id ? { id, teams, time, tip, category, status } : m);
             } else {
-                // Add New Match
-                const newMatch = { id: Date.now(), teams, time, tip, category, status };
-                matches.push(newMatch);
+                matches.push({ id: Date.now(), teams, time, tip, category, status });
             }
 
             localStorage.setItem('football_matches', JSON.stringify(matches));
-            resetForm();
-            renderMatches();
+            resetAdminForm();
+            renderAdminTable();
         }
 
         function editMatch(id) {
-            const match = matches.find(m => m.id == id);
-            if (!match) return;
+            const m = matches.find(match => match.id == id);
+            if(!m) return;
+            document.getElementById('match-id').value = m.id;
+            document.getElementById('match-teams').value = m.teams;
+            document.getElementById('match-time').value = m.time;
+            document.getElementById('tip-content').value = m.tip;
+            document.getElementById('tip-category').value = m.category;
+            document.getElementById('tip-status').value = m.status;
 
-            document.getElementById('match-id').value = match.id;
-            document.getElementById('match-teams').value = match.teams;
-            document.getElementById('match-time').value = match.time;
-            document.getElementById('tip-content').value = match.tip;
-            document.getElementById('tip-category').value = match.category;
-            document.getElementById('tip-status').value = match.status;
-
-            document.getElementById('form-title').innerText = "Edit Match & Tip";
-            document.getElementById('btn-save').innerText = "Update Match";
+            document.getElementById('form-title').innerText = "Edit Current Row Entry";
+            document.getElementById('btn-save').innerText = "Modify Changes";
             document.getElementById('btn-cancel').classList.remove('hidden');
         }
 
         function deleteMatch(id) {
-            if (confirm("Are you sure you want to delete this match?")) {
+            if(confirm("Purge row element record from table engine?")) {
                 matches = matches.filter(m => m.id != id);
                 localStorage.setItem('football_matches', JSON.stringify(matches));
-                renderMatches();
+                renderAdminTable();
             }
         }
 
-        function resetForm() {
-            document.getElementById('match-id').value = "";
-            document.getElementById('match-teams').value = "";
-            document.getElementById('match-time').value = "";
-            document.getElementById('tip-content').value = "";
+        function resetAdminForm() {
+            ['match-id', 'match-teams', 'match-time', 'tip-content'].forEach(id => document.getElementById(id).value = "");
             document.getElementById('tip-category').value = "Free";
             document.getElementById('tip-status').value = "Published";
-
-            document.getElementById('form-title').innerText = "Add New Match & Tip";
-            document.getElementById('btn-save').innerText = "Save Match";
+            document.getElementById('form-title').innerText = "Publish/Manage Matches";
+            document.getElementById('btn-save').innerText = "Save & Push";
             document.getElementById('btn-cancel').classList.add('hidden');
         }
 
-        function renderMatches() {
-            const tableBody = document.getElementById('match-list-table');
-            tableBody.innerHTML = "";
-
-            if (matches.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400">No matches added yet.</td></tr>`;
+        function renderAdminTable() {
+            const body = document.getElementById('admin-match-table');
+            body.innerHTML = "";
+            if(matches.length === 0) {
+                body.innerHTML = "<tr><td colspan='6' class='p-4 text-center text-gray-400'>Database array clear.</td></tr>";
                 return;
             }
-
             matches.forEach(m => {
-                const badgeColor = m.category === 'VIP' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800';
-                const statusColor = m.status === 'Published' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800';
-                
-                // Formatting date for clean view
-                const dateObj = new Date(m.time);
-                const formattedDate = isNaN(dateObj) ? m.time : dateObj.toLocaleString([], {hour: '2-digit', minute:'2-digit', day: 'numeric', month:'short'});
-
-                tableBody.innerHTML += `
-                    <tr class="hover:bg-gray-50">
-                        <td class="p-3 font-medium text-gray-800">${m.teams}</td>
-                        <td class="p-3 text-xs text-gray-500">${formattedDate}</td>
-                        <td class="p-3 font-semibold text-blue-600">${m.tip}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold ${badgeColor}">${m.category}</span></td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold ${statusColor}">${m.status}</span></td>
-                        <td class="p-3 text-right space-x-1 whitespace-nowrap">
-                            <button onclick="editMatch(${m.id})" class="text-blue-600 hover:text-blue-900 font-medium mr-2">Edit</button>
-                            <button onclick="deleteMatch(${m.id})" class="text-red-600 hover:text-red-900 font-medium">Delete</button>
+                body.innerHTML += `
+                    <tr class="hover:bg-gray-50 border-b">
+                        <td class="p-3 font-semibold text-gray-700">${m.teams}</td>
+                        <td class="p-3 text-xs text-gray-500">${m.time}</td>
+                        <td class="p-3 font-bold text-blue-600">${m.tip}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${m.category==='VIP'?'bg-purple-100 text-purple-700':'bg-green-100 text-green-700'}">${m.category}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${m.status==='Published'?'bg-blue-100 text-blue-700':'bg-gray-100 text-gray-700'}">${m.status}</span></td>
+                        <td class="p-3 text-right space-x-2">
+                            <button onclick="editMatch(${m.id})" class="text-blue-600 hover:underline">Edit</button>
+                            <button onclick="deleteMatch(${m.id})" class="text-red-500 hover:underline">Delete</button>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
             });
         }
 
-        // Run auth on page load
-        checkAuth();
+        // System Startup Initialization Block
+        showSection('home-page');
     </script>
 </body>
 </html>
-
