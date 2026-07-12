@@ -3,18 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Limited - Live Data</title>
+    <title>Football Limited - Professional Predictions</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wdwGreen: '#5b8e55',
+                        wdwDarkGreen: '#4a7945',
+                        wdwBg: '#f4f6f4',
+                        wdwCardBg: '#ffffff'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-100 p-4">
-    <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
-        <h1 class="text-xl font-bold mb-4">Matches</h1>
-        <div id="match-container">Connecting...</div>
+<body class="bg-wdwBg text-gray-800 min-h-screen font-sans">
+
+    <header class="bg-wdwGreen px-4 py-3 flex justify-between items-center shadow-md sticky top-0 z-50">
+        <button onclick="toggleMenu()" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <div class="text-xl md:text-2xl font-extrabold tracking-wider text-white uppercase italic ml-2">
+            FOOTBALL LIMITED
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="alert('Open Sign In Modal')" class="text-white text-xs md:text-sm font-bold bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg border border-white/20 transition">Sign In</button>
+            <button onclick="alert('Open Register Modal')" class="bg-white text-wdwGreen text-xs md:text-sm font-extrabold px-3 py-1.5 rounded-lg shadow hover:bg-gray-100 transition">Register</button>
+        </div>
+    </header>
+
+    <nav id="mobile-menu" class="hidden bg-wdwDarkGreen text-white divide-y divide-green-700/50">
+        <a href="#" class="flex items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition gap-4"><i class="fa-solid fa-house w-5 text-center"></i><span>Home</span></a>
+        <a href="#" class="flex items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition gap-4"><i class="fa-solid fa-chart-simple w-5 text-center"></i><span>Statistics</span></a>
+    </nav>
+
+    <!-- শিরোনাম বাদে কাস্টম হিরো সেকশন -->
+    <div class="bg-gradient-to-r from-green-800 to-wdwGreen text-white px-4 py-6 shadow-sm">
+        <p class="text-green-100 text-sm max-w-2xl mx-auto text-center leading-relaxed italic">
+            "Professional insights and data-driven analysis for daily matches."
+        </p>
     </div>
 
+    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+        <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-none snap-x">
+            <button class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start"><i class="fa-solid fa-square-poll-horizontal mr-1"></i> Results</button>
+            <button class="bg-wdwGreen text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start"><i class="fa-solid fa-calendar-day mr-1"></i> Today</button>
+            <button class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start"><i class="fa-solid fa-gift mr-1"></i> Free</button>
+            <button class="bg-amber-500 text-white hover:bg-amber-600 px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start flex items-center gap-1"><i class="fa-solid fa-crown"></i> VIP Match</button>
+        </div>
+
+        <div class="bg-wdwCardBg rounded-2xl shadow-sm overflow-hidden border border-gray-200">
+            <div class="bg-gray-100 px-4 py-3.5 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="font-bold text-gray-700 text-sm uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-star text-amber-500"></i> Top Featured Predictions</h3>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">Live Data</span>
+            </div>
+
+            <div id="match-container" class="divide-y divide-gray-100">
+                <div class="p-8 text-center text-gray-500 text-sm"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Connecting to database...</div>
+            </div>
+        </div>
+
+    </main>
+
     <script>
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
         const SUPABASE_URL = 'https://coaaixztzeqxeheugrqu.supabase.co';
-        // আপনার আসল JWT Key
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvYWFpeHp0emVxeGVoZXVncnF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MzY0ODIsImV4cCI6MjA5OTQxMjQ4Mn0.5Tr8VrnyA-BtiXbUoKZFiz100zgSD463HC_Shgw8pt4';
 
         fetch(`${SUPABASE_URL}/rest/v1/Match?select=*`, {
@@ -26,7 +85,74 @@
         })
         .then(res => res.json())
         .then(data => {
-            // ডেটা পেলে তা স্ক্রিনে দেখাবে
+            let html = '';
+            if(!data || data.length === 0) {
+                document.getElementById('match-container').innerHTML = '<div class="p-8 text-center text-gray-500 text-sm">No matches found in database.</div>';
+                return;
+            }
+            
+            data.sort((a, b) => b.id - a.id);
+
+            data.forEach(match => {
+                html += `
+                <div class="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div class="flex-1">
+                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">🏆 ${match.league || ''}</div>
+                        <div class="font-bold text-gray-800 text-base flex items-center gap-2">
+                            <span>${match.home_team || ''}</span> <span class="text-gray-400 font-normal text-xs">vs</span> <span>${match.away_team || ''}</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-0.5"><i class="fa-regular fa-clock mr-1"></i> ${match.match_time || ''}</div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                        <div class="flex gap-1 text-center font-bold text-xs">
+                            <div class="bg-green-50 text-green-700 px-2.5 py-1.5 rounded-lg border border-green-100"><span class="block text-[10px] text-gray-400 font-medium">Home</span> ${match.home_pct || '0%'}</div>
+                            <div class="bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-100"><span class="block text-[10px] text-gray-400 font-medium">Draw</span> ${match.draw_pct || '0%'}</div>
+                            <div class="bg-blue-50 text-blue-700 px-2.5 py-1.5 rounded-lg border border-blue-100"><span class="block text-[10px] text-gray-400 font-medium">Away</span> ${match.away_pct || '0%'}</div>
+                        </div>
+                        <div class="bg-wdwGreen text-white px-3 py-2 rounded-xl text-center font-extrabold text-sm min-w-[90px] shadow-sm">
+                            <span class="block text-[9px] uppercase tracking-wider text-green-100 font-normal">TIP</span> ${match.tip || 'N/A'}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('match-container').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('match-container').innerHTML = '<div class="p-4 text-center text-red-500 text-sm">Error connecting to database.</div>';
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Limited - Live Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
+        <h1 class="text-xl font-bold mb-4">Matches</h1>
+        <div id="match-container">Connecting...</div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://coaaixztzeqxeheugrqu.supabase.co';
+        // JWT Key
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvYWFpeHp0emVxeGVoZXVncnF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MzY0ODIsImV4cCI6MjA5OTQxMjQ4Mn0.5Tr8VrnyA-BtiXbUoKZFiz100zgSD463HC_Shgw8pt4';
+
+        fetch(`${SUPABASE_URL}/rest/v1/Match?select=*`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            // 
             document.getElementById('match-container').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
         })
         .catch(err => {
