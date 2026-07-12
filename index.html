@@ -82,7 +82,6 @@
     <script>
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
-        // আপনার প্রজেক্টের লাইভ ইনফরমেশন
         const apiBase = 'https://coaaixztzeqxeheugrqu.supabase.co/rest/v1/Match?select=*';
         const SUPABASE_ANON_KEY = 'Sb_publishable_Zm38ZjQbCGXE2r7eSKxfGA_lHHiwWuc';
 
@@ -90,10 +89,14 @@
             method: 'GET',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json'
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
         .then(data => {
             let html = '';
             
@@ -102,7 +105,7 @@
                 return;
             }
 
-            // আইডি অনুযায়ী সর্ট করে নতুন ম্যাচগুলো ওপরে দেখাবে
+            // নতুন ম্যাচগুলো উপরে দেখানোর জন্য সর্ট
             data.sort((a, b) => b.id - a.id);
 
             data.forEach(match => {
