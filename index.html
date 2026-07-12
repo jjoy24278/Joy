@@ -1,10 +1,236 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My First Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Tips Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Welcome to My Website!</h1>
-    <p>Ami amar website toiri korchi.</p>
+<body class="bg-gray-100 min-h-screen font-sans">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-section" class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-md w-96">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Admin Login</h2>
+            <div id="login-error" class="hidden bg-red-100 text-red-700 p-2 rounded mb-4 text-sm text-center">Invalid Password!</div>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-600 mb-2">Password</label>
+                <input type="password" id="admin-password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Admin Password">
+            </div>
+            <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Login</button>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD (HIDDEN BY DEFAULT) -->
+    <div id="admin-dashboard" class="hidden">
+        <!-- Navbar -->
+        <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md">
+            <h1 class="text-xl font-bold">⚽ Football Tips Admin Panel</h1>
+            <button onclick="handleLogout()" class="bg-red-500 px-4 py-1.5 rounded-lg hover:bg-red-600 transition text-sm font-semibold">Logout</button>
+        </nav>
+
+        <div class="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <!-- LEFT COLUMN: ADD / EDIT FORM -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 id="form-title" class="text-lg font-bold mb-4 text-gray-700">Add New Match & Tip</h3>
+                <input type="hidden" id="match-id">
+                
+                <div class="mb-3">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Teams (e.g. Real Madrid vs Barcelona)</label>
+                    <input type="text" id="match-teams" class="w-full p-2 border rounded text-sm">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Match Date & Time</label>
+                    <input type="datetime-local" id="match-time" class="w-full p-2 border rounded text-sm">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tip Content (e.g. Over 2.5 Goals)</label>
+                    <input type="text" id="tip-content" class="w-full p-2 border rounded text-sm">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tip Category</label>
+                    <select id="tip-category" class="w-full p-2 border rounded text-sm bg-white">
+                        <option value="Free">Free Tip</option>
+                        <option value="VIP">VIP Tip</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Status</label>
+                    <select id="tip-status" class="w-full p-2 border rounded text-sm bg-white">
+                        <option value="Published">Publish Immediately</option>
+                        <option value="Draft">Save as Draft</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveMatch()" id="btn-save" class="flex-1 bg-green-600 text-white py-2 rounded font-semibold hover:bg-green-700 text-sm">Save Match</button>
+                    <button onclick="resetForm()" id="btn-cancel" class="hidden flex-1 bg-gray-400 text-white py-2 rounded font-semibold hover:bg-gray-500 text-sm">Cancel</button>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: MATCHES & TIPS LIST -->
+            <div class="md:col-span-2 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4 text-gray-700">All Matches & Predictions</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 border-b text-xs font-bold uppercase text-gray-600">
+                                <th class="p-3">Match</th>
+                                <th class="p-3">Time</th>
+                                <th class="p-3">Tip</th>
+                                <th class="p-3">Type</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="match-list-table" class="text-sm divide-y">
+                            <!-- Matches will load here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // SECURE LOGIN SYSTEM (Default Password: admin123)
+        const SECURE_HASH = "admin123"; 
+
+        function handleLogin() {
+            const passInput = document.getElementById('admin-password').value;
+            if (passInput === SECURE_HASH) {
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                checkAuth();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            checkAuth();
+        }
+
+        function checkAuth() {
+            const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
+            if (isLoggedIn === 'true') {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderMatches();
+            } else {
+                document.getElementById('login-section').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('hidden');
+            }
+        }
+
+        // CRUD SYSTEM (Create, Read, Update, Delete)
+        let matches = JSON.parse(localStorage.getItem('football_matches')) || [];
+
+        function saveMatch() {
+            const id = document.getElementById('match-id').value;
+            const teams = document.getElementById('match-teams').value;
+            const time = document.getElementById('match-time').value;
+            const tip = document.getElementById('tip-content').value;
+            const category = document.getElementById('tip-category').value;
+            const status = document.getElementById('tip-status').value;
+
+            if (!teams || !time || !tip) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            if (id) {
+                // Edit Existing Match
+                matches = matches.map(m => m.id == id ? { id, teams, time, tip, category, status } : m);
+            } else {
+                // Add New Match
+                const newMatch = { id: Date.now(), teams, time, tip, category, status };
+                matches.push(newMatch);
+            }
+
+            localStorage.setItem('football_matches', JSON.stringify(matches));
+            resetForm();
+            renderMatches();
+        }
+
+        function editMatch(id) {
+            const match = matches.find(m => m.id == id);
+            if (!match) return;
+
+            document.getElementById('match-id').value = match.id;
+            document.getElementById('match-teams').value = match.teams;
+            document.getElementById('match-time').value = match.time;
+            document.getElementById('tip-content').value = match.tip;
+            document.getElementById('tip-category').value = match.category;
+            document.getElementById('tip-status').value = match.status;
+
+            document.getElementById('form-title').innerText = "Edit Match & Tip";
+            document.getElementById('btn-save').innerText = "Update Match";
+            document.getElementById('btn-cancel').classList.remove('hidden');
+        }
+
+        function deleteMatch(id) {
+            if (confirm("Are you sure you want to delete this match?")) {
+                matches = matches.filter(m => m.id != id);
+                localStorage.setItem('football_matches', JSON.stringify(matches));
+                renderMatches();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('match-id').value = "";
+            document.getElementById('match-teams').value = "";
+            document.getElementById('match-time').value = "";
+            document.getElementById('tip-content').value = "";
+            document.getElementById('tip-category').value = "Free";
+            document.getElementById('tip-status').value = "Published";
+
+            document.getElementById('form-title').innerText = "Add New Match & Tip";
+            document.getElementById('btn-save').innerText = "Save Match";
+            document.getElementById('btn-cancel').classList.add('hidden');
+        }
+
+        function renderMatches() {
+            const tableBody = document.getElementById('match-list-table');
+            tableBody.innerHTML = "";
+
+            if (matches.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400">No matches added yet.</td></tr>`;
+                return;
+            }
+
+            matches.forEach(m => {
+                const badgeColor = m.category === 'VIP' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800';
+                const statusColor = m.status === 'Published' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800';
+                
+                // Formatting date for clean view
+                const dateObj = new Date(m.time);
+                const formattedDate = isNaN(dateObj) ? m.time : dateObj.toLocaleString([], {hour: '2-digit', minute:'2-digit', day: 'numeric', month:'short'});
+
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 font-medium text-gray-800">${m.teams}</td>
+                        <td class="p-3 text-xs text-gray-500">${formattedDate}</td>
+                        <td class="p-3 font-semibold text-blue-600">${m.tip}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold ${badgeColor}">${m.category}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold ${statusColor}">${m.status}</span></td>
+                        <td class="p-3 text-right space-x-1 whitespace-nowrap">
+                            <button onclick="editMatch(${m.id})" class="text-blue-600 hover:text-blue-900 font-medium mr-2">Edit</button>
+                            <button onclick="deleteMatch(${m.id})" class="text-red-600 hover:text-red-900 font-medium">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Run auth on page load
+        checkAuth();
+    </script>
 </body>
 </html>
+
