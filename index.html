@@ -25,245 +25,114 @@
 </head>
 <body class="bg-wdwBg text-gray-800 min-h-screen font-sans">
 
-    <!-- TOP NAVIGATION BAR WITH SIGN IN / SIGN UP -->
+    <!-- TOP NAVIGATION BAR -->
     <header class="bg-wdwGreen px-4 py-3 flex justify-between items-center shadow-md sticky top-0 z-50">
-        <!-- Menu Toggle Button -->
         <button onclick="toggleMenu()" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition">
             <i class="fa-solid fa-bars text-xl"></i>
         </button>
-        
-        <!-- Brand Name: Football Limited -->
         <div class="text-xl md:text-2xl font-extrabold tracking-wider text-white uppercase italic ml-2">
             FOOTBALL LIMITED
         </div>
-        
-        <!-- Auth Action Buttons (Sign In / Register) -->
         <div class="flex items-center gap-2">
-            <button onclick="alert('Open Sign In Modal')" class="text-white text-xs md:text-sm font-bold bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg border border-white/20 transition">
-                Sign In
-            </button>
-            <button onclick="alert('Open Register Modal')" class="bg-white text-wdwGreen text-xs md:text-sm font-extrabold px-3 py-1.5 rounded-lg shadow hover:bg-gray-100 transition">
-                Register
-            </button>
+            <button onclick="alert('Open Sign In Modal')" class="text-white text-xs md:text-sm font-bold bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg border border-white/20 transition">Sign In</button>
+            <button onclick="alert('Open Register Modal')" class="bg-white text-wdwGreen text-xs md:text-sm font-extrabold px-3 py-1.5 rounded-lg shadow hover:bg-gray-100 transition">Register</button>
         </div>
     </header>
 
-    <!-- ACCORDION NAVIGATION MENU (Hidden by default) -->
+    <!-- ACCORDION MENU -->
     <nav id="mobile-menu" class="hidden bg-wdwDarkGreen text-white divide-y divide-green-700/50">
-        <a href="#" class="flex items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition gap-4">
-            <i class="fa-solid fa-house w-5 text-center"></i><span>Home</span>
-        </a>
-        <div>
-            <button onclick="toggleDropdown('predictions-menu')" class="w-full flex justify-between items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition">
-                <div class="flex items-center gap-4"><i class="fa-solid fa-futbol w-5 text-center"></i><span>Predictions</span></div>
-                <i class="fa-solid fa-plus text-xs"></i>
-            </button>
-            <div id="predictions-menu" class="hidden bg-green-900/40 pl-14 pr-6 py-2 space-y-2 text-sm text-gray-200">
-                <a href="#" class="block py-1">Today's Tips</a>
-                <a href="#" class="block py-1">Tomorrow's Tips</a>
-            </div>
-        </div>
-        <a href="#" class="flex items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition gap-4">
-            <i class="fa-solid fa-chart-simple w-5 text-center"></i><span>Statistics</span>
-        </a>
+        <a href="#" class="flex items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition gap-4"><i class="fa-solid fa-house w-5 text-center"></i><span>Home</span></a>
+        <a href="#" class="flex items-center px-6 py-3.5 text-base font-semibold hover:bg-green-800 transition gap-4"><i class="fa-solid fa-chart-simple w-5 text-center"></i><span>Statistics</span></a>
     </nav>
 
-    <!-- HERO / BANNER SECTION -->
+    <!-- HERO SECTION -->
     <div class="bg-gradient-to-r from-green-800 to-wdwGreen text-white px-4 py-8 text-center shadow-sm">
-        <h1 class="text-2xl md:text-4xl font-extrabold mb-2">Free Football Predictions & Statistics</h1>
-        <p class="text-green-100 text-sm max-w-xl mx-auto">Get daily data-driven tips, league tables, and betting tools for top football leagues worldwide.</p>
+        <h1 class="text-2xl md:text-4xl font-extrabold mb-3">Free Football Predictions & Statistics</h1>
+        <p class="text-green-100 text-sm max-w-2xl mx-auto leading-relaxed">
+            We have a team of 30+ dedicated football analysts who carefully review matches every day using statistics, team form, player performance, and tactical research.
+        </p>
     </div>
 
-    <!-- MAIN CONTENT AREA -->
+    <!-- MAIN CONTENT -->
     <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        
-        <!-- QUICK STATS CHIPS -->
-        <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold uppercase">
-            <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-green-600">
-                <span class="block text-gray-400 font-medium mb-1">Total Tips</span>
-                <span class="text-base text-gray-800">45+ Today</span>
-            </div>
-            <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-blue-600">
-                <span class="block text-gray-400 font-medium mb-1">Avg Odds</span>
-                <span class="text-base text-gray-800">1.85</span>
-            </div>
-            <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-amber-500">
-                <span class="block text-gray-400 font-medium mb-1">Win Rate</span>
-                <span class="text-base text-gray-800">78%</span>
-            </div>
-        </div>
 
-        <!-- PROFESSIONAL ANALYTICS & TRUST DISCLAIMER SECTION -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-6">
-            <!-- Section Title -->
-            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
-                <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-wdwGreen">
-                    <i class="fa-solid fa-shield-halved text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="font-extrabold text-gray-800 text-lg">Why Trust Our Predictions?</h3>
-                    <p class="text-xs text-gray-400 font-medium">Data-driven insights you can rely on</p>
-                </div>
-            </div>
-
-            <!-- Content Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Core Strength -->
-                <div class="space-y-2">
-                    <div class="flex items-center gap-2 text-wdwGreen font-bold text-sm uppercase tracking-wide">
-                        <i class="fa-solid fa-users-gear text-xs"></i> Expert Team
-                    </div>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        We have a team of <strong class="text-gray-800 font-bold">30+ dedicated football analysts</strong> who carefully review matches every day using statistics, team form, player performance, and tactical research.
-                    </p>
-                </div>
-
-                <!-- Professional Approach -->
-                <div class="space-y-2">
-                    <div class="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wide">
-                        <i class="fa-solid fa-chart-line text-xs"></i> Our Philosophy
-                    </div>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        We provide professional football analysis based on research and data. Our goal is to give you the most accurate statistical edge possible.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Strict Transparency Disclaimer -->
-            <div class="bg-red-50 border border-red-100 rounded-xl p-4 flex gap-3 items-start">
-                <i class="fa-solid fa-triangle-exclamation text-red-500 text-lg mt-0.5"></i>
-                <div>
-                    <h4 class="font-bold text-red-800 text-sm uppercase tracking-wider mb-0.5">Strict Transparency Disclaimer</h4>
-                    <p class="text-red-700 text-xs leading-relaxed">
-                        We are not fixers. We do not sell fixed matches. All insights shared on this platform are strictly analytical and data-driven.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- HORIZONTAL FILTER BUTTONS WITH VIP HIGHLIGHT -->
+        <!-- FILTER BUTTONS -->
         <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-none snap-x">
-            <button onclick="alert('Showing Results')" class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition shadow-sm snap-start">
-                <i class="fa-solid fa-square-poll-horizontal mr-1"></i> Results
-            </button>
-            <button onclick="alert('Showing Today Matches')" class="bg-wdwGreen text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition shadow-sm snap-start">
-                <i class="fa-solid fa-calendar-day mr-1"></i> Today
-            </button>
-            <button onclick="alert('Showing Free Tips')" class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition shadow-sm snap-start">
-                <i class="fa-solid fa-gift mr-1"></i> Free
-            </button>
-            <button onclick="alert('Showing VIP Matches')" class="bg-amber-500 text-white hover:bg-amber-600 px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition shadow-sm snap-start flex items-center gap-1">
-                <i class="fa-solid fa-crown"></i> VIP Match
-            </button>
-            <button onclick="alert('Showing 7 Day Results')" class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition shadow-sm snap-start">
-                <i class="fa-solid fa-history mr-1"></i> 7 Day Results
-            </button>
+            <button class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start"><i class="fa-solid fa-square-poll-horizontal mr-1"></i> Results</button>
+            <button class="bg-wdwGreen text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start"><i class="fa-solid fa-calendar-day mr-1"></i> Today</button>
+            <button class="bg-gray-200 text-gray-700 hover:bg-wdwGreen hover:text-white px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start"><i class="fa-solid fa-gift mr-1"></i> Free</button>
+            <button class="bg-amber-500 text-white hover:bg-amber-600 px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap snap-start flex items-center gap-1"><i class="fa-solid fa-crown"></i> VIP Match</button>
         </div>
 
-        <!-- PREDICTIONS TABLE CARD -->
+        <!-- PREDICTIONS CARD -->
         <div class="bg-wdwCardBg rounded-2xl shadow-sm overflow-hidden border border-gray-200">
             <div class="bg-gray-100 px-4 py-3.5 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="font-bold text-gray-700 text-sm uppercase tracking-wide flex items-center gap-2">
-                    <i class="fa-solid fa-star text-amber-500"></i> Top Featured Predictions
-                </h3>
+                <h3 class="font-bold text-gray-700 text-sm uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-star text-amber-500"></i> Top Featured Predictions</h3>
                 <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">Live Data</span>
             </div>
 
-            <!-- TABLE CONTAINER -->
-            <div class="divide-y divide-gray-100">
-                
-                <!-- MATCH ROW 1 -->
-                <div class="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <div class="flex-1">
-                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">🏆 English Premier League</div>
-                        <div class="font-bold text-gray-800 text-base flex items-center gap-2">
-                            <span>Chelsea</span> <span class="text-gray-400 font-normal text-xs">vs</span> <span>Arsenal</span>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-0.5"><i class="fa-regular fa-clock mr-1"></i> Today, 19:45</div>
-                    </div>
-                    <!-- Probabilities -->
-                    <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-                        <div class="flex gap-1 text-center font-bold text-xs">
-                            <div class="bg-green-50 text-green-700 px-2.5 py-1.5 rounded-lg border border-green-100">
-                                <span class="block text-[10px] text-gray-400 font-medium">Home</span> 45%
-                            </div>
-                            <div class="bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-100">
-                                <span class="block text-[10px] text-gray-400 font-medium">Draw</span> 30%
-                            </div>
-                            <div class="bg-blue-50 text-blue-700 px-2.5 py-1.5 rounded-lg border border-blue-100">
-                                <span class="block text-[10px] text-gray-400 font-medium">Away</span> 25%
-                            </div>
-                        </div>
-                        <div class="bg-wdwGreen text-white px-3 py-2 rounded-xl text-center font-extrabold text-sm min-w-[90px] shadow-sm">
-                            <span class="block text-[9px] uppercase tracking-wider text-green-100 font-normal">TIP</span>
-                            Home Win
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MATCH ROW 2 -->
-                <div class="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <div class="flex-1">
-                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">🏆 Spain La Liga</div>
-                        <div class="font-bold text-gray-800 text-base flex items-center gap-2">
-                            <span>Real Madrid</span> <span class="text-gray-400 font-normal text-xs">vs</span> <span>Barcelona</span>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-0.5"><i class="fa-regular fa-clock mr-1"></i> Tonight, 22:00</div>
-                    </div>
-                    <!-- Probabilities -->
-                    <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-                        <div class="flex gap-1 text-center font-bold text-xs">
-                            <div class="bg-green-50 text-green-700 px-2.5 py-1.5 rounded-lg border border-green-100">
-                                <span class="block text-[10px] text-gray-400 font-medium">Home</span> 38%
-                            </div>
-                            <div class="bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-100">
-                                <span class="block text-[10px] text-gray-400 font-medium">Draw</span> 34%
-                            </div>
-                            <div class="bg-blue-50 text-blue-700 px-2.5 py-1.5 rounded-lg border border-blue-100">
-                                <span class="block text-[10px] text-gray-400 font-medium">Away</span> 28%
-                            </div>
-                        </div>
-                        <div class="bg-wdwGreen text-white px-3 py-2 rounded-xl text-center font-extrabold text-sm min-w-[90px] shadow-sm">
-                            <span class="block text-[9px] uppercase tracking-wider text-green-100 font-normal">TIP</span>
-                            Draw
-                        </div>
-                    </div>
-                </div>
-
+            <!-- DYNAMIC MATCH CONTAINER -->
+            <div id="match-container" class="divide-y divide-gray-100">
+                <div class="p-8 text-center text-gray-500 text-sm"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading matches...</div>
             </div>
-        </div>
-
-        <!-- PROMOTIONAL BANNER -->
-        <div class="bg-gradient-to-b from-gray-900 to-black rounded-2xl overflow-hidden shadow-md p-6 text-center border border-gray-800">
-            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 block mb-1">💎 GEMBET SPONSOR</span>
-            <h2 class="text-2xl font-extrabold text-amber-400 mb-2">100% First Bet Protection</h2>
-            <p class="text-gray-400 text-xs mb-5">Join today and secure your first football match prediction risk-free.</p>
-            <a href="#" class="inline-block bg-gradient-to-r from-green-600 to-wdwGreen text-white font-extrabold text-sm px-8 py-3 rounded-full shadow-lg hover:opacity-90 transition">
-                Join Now
-            </a>
-        </div>
-
-        <!-- FOOTER BRAND FOLLOW BUTTON -->
-        <div>
-            <a href="#" class="w-full bg-black hover:bg-gray-900 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-3 shadow transition text-sm">
-                <i class="fa-brands fa-x-twitter text-lg"></i>
-                <span>FOLLOW Football Limited</span>
-            </a>
         </div>
 
     </main>
 
-    <!-- INTERACTIVE JAVASCRIPT LAYER -->
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
-        function toggleDropdown(id) {
-            const element = document.getElementById(id);
-            element.classList.toggle('hidden');
-        }
+        // আপনার প্রজেক্টের লাইভ ইনফরমেশন
+        const apiBase = 'https://coaaixztzeqxeheugrqu.supabase.co/rest/v1/Match?select=*';
+        const SUPABASE_ANON_KEY = 'Sb_publishable_Zm38ZjQbCGXE2r7eSKxfGA_lHHiwWuc';
+
+        fetch(apiBase, {
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            let html = '';
+            
+            if(!data || data.length === 0) {
+                document.getElementById('match-container').innerHTML = '<div class="p-8 text-center text-gray-500 text-sm">No matches found. Add rows in your Supabase Match table!</div>';
+                return;
+            }
+
+            // আইডি অনুযায়ী সর্ট করে নতুন ম্যাচগুলো ওপরে দেখাবে
+            data.sort((a, b) => b.id - a.id);
+
+            data.forEach(match => {
+                html += `
+                <div class="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div class="flex-1">
+                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">🏆 ${match.league || ''}</div>
+                        <div class="font-bold text-gray-800 text-base flex items-center gap-2">
+                            <span>${match.home_team || ''}</span> <span class="text-gray-400 font-normal text-xs">vs</span> <span>${match.away_team || ''}</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-0.5"><i class="fa-regular fa-clock mr-1"></i> ${match.match_time || ''}</div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                        <div class="flex gap-1 text-center font-bold text-xs">
+                            <div class="bg-green-50 text-green-700 px-2.5 py-1.5 rounded-lg border border-green-100"><span class="block text-[10px] text-gray-400 font-medium">Home</span> ${match.home_pct || '0%'}</div>
+                            <div class="bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-100"><span class="block text-[10px] text-gray-400 font-medium">Draw</span> ${match.draw_pct || '0%'}</div>
+                            <div class="bg-blue-50 text-blue-700 px-2.5 py-1.5 rounded-lg border border-blue-100"><span class="block text-[10px] text-gray-400 font-medium">Away</span> ${match.away_pct || '0%'}</div>
+                        </div>
+                        <div class="bg-wdwGreen text-white px-3 py-2 rounded-xl text-center font-extrabold text-sm min-w-[90px] shadow-sm">
+                            <span class="block text-[9px] uppercase tracking-wider text-green-100 font-normal">TIP</span> ${match.tip || 'N/A'}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('match-container').innerHTML = html;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('match-container').innerHTML = '<div class="p-4 text-center text-red-500 text-sm">Error connecting to Supabase Database.</div>';
+        });
     </script>
 </body>
 </html>
