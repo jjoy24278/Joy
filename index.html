@@ -204,3 +204,57 @@ Today's Tips
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="admin">
+
+<h1>Admin Dashboard</h1>
+
+<input id="match" placeholder="Match Name">
+
+<input id="prediction" placeholder="Prediction">
+
+<input id="odds" placeholder="Odds">
+
+<select id="type">
+
+<option>Free</option>
+
+<option>VIP</option>
+
+</select>
+
+<button onclick="saveTip()">
+
+Add Tip
+
+</button>
+
+<hr>
+
+<div id="tips"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/admin.js"></script>
+
+</body>
+</html>
